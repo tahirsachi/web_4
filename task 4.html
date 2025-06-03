@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All-in-One: Portfolio + To-Do + Products</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+    header, section {
+      padding: 20px;
+      background: #fff;
+      margin: 10px;
+      border-radius: 8px;
+    }
+    h2 {
+      color: #333;
+    }
+    /* Portfolio */
+    .portfolio-card {
+      background: #fafafa;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    /* To-Do List */
+    .todo {
+      margin-top: 10px;
+    }
+    .todo input[type="text"] {
+      padding: 8px;
+      width: 70%;
+    }
+    .todo button {
+      padding: 8px;
+    }
+    .todo ul {
+      list-style: none;
+      padding: 0;
+    }
+    .todo li {
+      padding: 5px 0;
+    }
+    /* Product Listing */
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+    .filters {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Portfolio, To-Do, and Product Page</h1>
+  </header>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio">
+    <h2>Personal Portfolio</h2>
+    <div class="portfolio-card">
+      <h3>About Me</h3>
+      <p>Hello! I’m Charan, an AI & Data Science student learning web development. Welcome to my portfolio website!</p>
+    </div>
+    <div class="portfolio-card">
+      <h3>Projects</h3>
+      <ul>
+        <li>Project 1: Build Web Portfolio</li>
+        <li>Project 2: Create To-Do List</li>
+        <li>Project 3: Product Listing Page</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- To-Do List Section -->
+  <section id="todo">
+    <h2>To-Do List</h2>
+    <div class="todo">
+      <input type="text" id="taskInput" placeholder="Add a task" />
+      <button onclick="addTask()">Add</button>
+      <ul id="taskList"></ul>
+    </div>
+  </section>
+
+  <!-- Product Listing Section -->
+  <section id="products">
+    <h2>Product Listing</h2>
+    <div class="filters">
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter" onchange="filterProducts()">
+        <option value="All">All</option>
+        <option value="Books">Books</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+      </select>
+      <label for="sortPrice">Sort by Price:</label>
+      <select id="sortPrice" onchange="sortProducts()">
+        <option value="asc">Low to High</option>
+        <option value="desc">High to Low</option>
+      </select>
+    </div>
+    <div class="product-list" id="productList">
+      <!-- Products will go here -->
+    </div>
+  </section>
+
+  <script>
+    // To-Do List Functionality
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const task = input.value.trim();
+      if (task) {
+        const li = document.createElement("li");
+        li.textContent = task;
+        document.getElementById("taskList").appendChild(li);
+        input.value = "";
+      }
+    }
+
+    // Product Listing Data
+    const products = [
+      { name: "JavaScript Book", category: "Books", price: 500 },
+      { name: "T-Shirt", category: "Clothing", price: 700 },
+      { name: "Headphones", category: "Electronics", price: 1500 },
+      { name: "Laptop", category: "Electronics", price: 45000 },
+      { name: "Python Book", category: "Books", price: 600 },
+      { name: "Jeans", category: "Clothing", price: 1200 },
+    ];
+
+    let filteredProducts = [...products];
+
+    function displayProducts() {
+      const container = document.getElementById("productList");
+      container.innerHTML = "";
+      filteredProducts.forEach((product) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = <h4>${product.name}</h4><p>Category: ${product.category}</p><p>Price: ₹${product.price}</p>;
+        container.appendChild(div);
+      });
+    }
+
+    function filterProducts() {
+      const category = document.getElementById("categoryFilter").value;
+      filteredProducts = products.filter(p => category === "All" || p.category === category);
+      sortProducts();
+    }
+
+    function sortProducts() {
+      const order = document.getElementById("sortPrice").value;
+      filteredProducts.sort((a, b) => order === "asc" ? a.price - b.price : b.price - a.price);
+      displayProducts();
+    }
+
+    // Initialize product list
+    window.onload = () => {
+      filterProducts();
+    };
+  </script>
+</body>
+</html>
